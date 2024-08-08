@@ -8,11 +8,10 @@ else
   project_root="$(pwd)"
 fi
 
-# Parse flags if major, minor or patch should be increased
+# Overwrite options
 python_root="$project_root"
 cpp_root="$project_root"
 shell_root="$project_root"
-#while [[ $# -gt 0 ]]; do
 for i in "$@"; do
   case $1 in
   --python=*)

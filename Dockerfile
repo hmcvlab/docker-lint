@@ -30,4 +30,5 @@ RUN ARCH="$(uname -m | sed 's/aarch64/arm64/g')" && \
 # Entrypoint
 COPY lint.sh ${BIN_LINT}
 RUN chmod +x ${BIN_LINT}
+WORKDIR /app
 ENTRYPOINT ["bash", "-c", "${BIN_LINT}"]

@@ -1,3 +1,7 @@
+"""
+Test if all linter binaries exist
+"""
+
 import shutil
 import pytest
 
