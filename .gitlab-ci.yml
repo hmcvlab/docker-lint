@@ -24,7 +24,7 @@ default:
   image: docker:dind
   needs: []
   script:
-    - df -H
+    - df -h
     - docker system prune -a -f --filter "until=72h" --filter "label=${LABEL}"
 
 amd_cleanup:
