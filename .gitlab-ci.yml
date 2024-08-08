@@ -37,6 +37,7 @@ lint:
 # build
 
 build:
+  extends: .template_docker
   needs: ["lint"]
   stage: build
   script:
