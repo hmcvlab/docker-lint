@@ -8,18 +8,19 @@ ENV DEBIAN_FRONTEND=noninteractive \
 
 RUN apt-get update -y && \
   apt-get install -y --no-install-recommends \
-  yamllint \
+  cppcheck \
   pylint \
   shellcheck \
-  cppcheck \
+  yamllint \
   wget \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
-# Install packages that are only available for pip
+# Install packages that are only for pip
 RUN python3 -m pip install --no-cache-dir --break-system-packages \
   flake8~=7.1.1 \
-  flake8-pytest-style~=2.0.0
+  flake8-pytest-style~=2.0.0 \
+  pytest~=8.3.2
 
 # Install hadolint
 RUN ARCH="$(uname -m | sed 's/aarch64/arm64/g')" && \
