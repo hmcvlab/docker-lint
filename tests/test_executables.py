@@ -1,6 +1,10 @@
 import shutil
+import pytest
 
 
-def test_binaries():
+@pytest.mark.parametrize(
+    ("binary"), ["python3", "pylint", "cppcheck", "shellcheck", "hadolint", "yamllint"]
+)
+def test_binaries(binary):
     """Check if binary exists"""
-    assert shutil.which("python3")
+    assert shutil.which(binary)
