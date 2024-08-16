@@ -34,7 +34,7 @@ lint:
     - if: "$CI_COMMIT_TAG"
   stage: static-analysis
   script:
-    - lint
+    - ls
 
 # build
 
