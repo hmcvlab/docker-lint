@@ -26,7 +26,7 @@ default:
 # prepare
 
 lint:
-  image: 
+  image:
     name: ${LINT_IMAGE}
     entrypoint: [""]
   needs: []
