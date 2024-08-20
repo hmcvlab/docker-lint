@@ -76,6 +76,14 @@ arm_test:
   extends: .template_test
   tags: [aarch64]
 
+latest_test:
+  image:
+    name: "${CI_REGISTRY_IMAGE}/tmp:latest"
+    entrypoint: [""]
+  stage: test
+  script:
+    - pytest
+
 # push
 
 push:
