@@ -8,6 +8,7 @@ stages:
 variables:
   CI_URL: "${CI_REGISTRY}/messtechnik-labor/docker"
   LINT_IMAGE: "${CI_URL}/lint:latest"
+  TMP_IMAGE: "${CI_REGISTRY_IMAGE}/tmp:${CI_COMMIT_TAG}"
   LABEL: "maintainer=messtechnik-labor"
 
 default:
@@ -48,7 +49,7 @@ build:
       --platform linux/amd64,linux/arm64/v8
     - |
       docker buildx build \
-      -t "${CI_REGISTRY_IMAGE}/tmp:${CI_COMMIT_TAG}" \
+      -t "${TMP_IMAGE}" \
       --label "${LABEL}" \
       --provenance=false \
       --platform linux/amd64,linux/arm64/v8 \
@@ -60,7 +61,7 @@ build:
 
 .template_test:
   image:
-    name: "${CI_REGISTRY_IMAGE}/tmp:${CI_COMMIT_TAG}"
+    name: "${TMP_IMAGE}"
     entrypoint: [""]
   needs: [build]
   rules:
@@ -90,13 +91,9 @@ tag:
   extends: .template_docker
   needs: ["amd_test", "arm_test"]
   stage: tag
-  before_script:
-    - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
   script:
-    - tmp_image="${CI_REGISTRY_IMAGE}/tmp:${CI_COMMIT_TAG}"
     - |
       docker buildx imagetools create \
-        --tag "${CI_REGISTRY_IMAGE}:${CI_COMMIT_TAG}" "$tmp_image"
-    - |
-      docker buildx imagetools create \
-        --tag "${CI_REGISTRY_IMAGE}:latest" "$tmp_image"
+        --tag "${CI_REGISTRY_IMAGE}:${CI_COMMIT_TAG}" \
+        --tag "${CI_REGISTRY_IMAGE}:latest" \
+      "${TMP_IMAGE}"
