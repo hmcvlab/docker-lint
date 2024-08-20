@@ -78,7 +78,7 @@ arm_test:
 
 latest_test:
   image:
-    name: "${CI_REGISTRY_IMAGE}/tmp:latest"
+    name: "${CI_REGISTRY_IMAGE}:latest"
     entrypoint: [""]
   stage: test
   script:
