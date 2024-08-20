@@ -3,7 +3,7 @@ stages:
   - static-analysis
   - build
   - test
-  - push
+  - tag
 
 variables:
   CI_URL: "${CI_REGISTRY}/messtechnik-labor/docker"
@@ -86,15 +86,17 @@ latest_test:
 
 # push
 
-push:
+tag:
   extends: .template_docker
   needs: ["amd_test", "arm_test"]
-  stage: push
+  stage: tag
   before_script:
     - docker login -u gitlab-ci-token -p ${CI_JOB_TOKEN} ${CI_REGISTRY}
   script:
     - tmp_image="${CI_REGISTRY_IMAGE}/tmp:${CI_COMMIT_TAG}"
-    - docker pull "$tmp_image"
-    - docker tag "$tmp_image" "${CI_REGISTRY_IMAGE}:${CI_COMMIT_TAG}"
-    - docker tag "$tmp_image" "${CI_REGISTRY_IMAGE}:latest"
-    - docker push --all-tags "${CI_REGISTRY_IMAGE}"
+    - |
+      docker buildx imagetools create \
+        --tag "${CI_REGISTRY_IMAGE}:${CI_COMMIT_TAG}" "$tmp_image"
+    - |
+      docker buildx imagetools create \
+        --tag "${CI_REGISTRY_IMAGE}:latest" "$tmp_image"
