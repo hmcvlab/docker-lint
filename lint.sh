@@ -62,9 +62,6 @@ append_if_exists() {
 
 # If input arg set to project root
 line
-printf "Shell root: %s\n" "$shell_root"
-printf "C++ root: %s\n" "$cpp_root"
-printf "Python root %s\n" "$python_root"
 if [ -f "${python_root}/pyproject.toml" ]; then
 	project_name=$(python3 -c "import toml; print(toml.load('pyproject.toml')['project']['name'])")
 	python_root=$(append_if_exists "$project_name")
@@ -72,6 +69,9 @@ if [ -f "${python_root}/pyproject.toml" ]; then
 else
 	python_root="$(append_if_exists "src")"
 fi
+printf "Shell root: %s\n" "$shell_root"
+printf "C++ root: %s\n" "$cpp_root"
+printf "Python root %s\n" "$python_root"
 line
 
 # Count files
