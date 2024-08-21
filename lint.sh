@@ -69,6 +69,8 @@ if [ -f "${python_root}/pyproject.toml" ]; then
 else
 	python_root="$(append_if_exists "src")"
 fi
+shell_root="$(append_if_exists "scripts")"
+cpp_root="$(append_if_exists "src")"
 printf "Shell root: %s\n" "$shell_root"
 printf "C++ root: %s\n" "$cpp_root"
 printf "Python root %s\n" "$python_root"
