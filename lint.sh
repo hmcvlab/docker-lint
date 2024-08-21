@@ -69,6 +69,8 @@ if [ -f "${python_root}/pyproject.toml" ]; then
 	project_name=$(python3 -c "import toml; print(toml.load('pyproject.toml')['project']['name'])")
 	python_root=$(append_if_exists "$project_name")
 	printf "New python root from pyproject.toml: %s\n" "$python_root"
+else
+	python_root="$(append_if_exists "src")"
 fi
 line
 
