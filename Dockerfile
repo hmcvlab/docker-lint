@@ -18,9 +18,10 @@ RUN apt-get update -y && \
 
 # Install packages that are only for pip
 RUN python3 -m pip install --no-cache-dir --break-system-packages \
-  flake8~=7.1.1 \
-  flake8-pytest-style~=2.0.0 \
-  pytest~=8.3.2
+  toml~=0.10 \
+  flake8~=7.1 \
+  flake8-pytest-style~=2.0 \
+  pytest~=8.3
 
 # Install hadolint
 RUN ARCH="$(uname -m | sed 's/aarch64/arm64/g')" && \
