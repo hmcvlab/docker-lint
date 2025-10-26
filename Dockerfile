@@ -1,4 +1,4 @@
-FROM python:3.12
+FROM python:3.14-slim
 
 SHELL ["/bin/bash", "-c", "-o", "pipefail"]
 
@@ -26,7 +26,7 @@ RUN python3 -m pip install --no-cache-dir --break-system-packages \
 # Install hadolint
 RUN ARCH="$(uname -m | sed 's/aarch64/arm64/g')" && \
   wget -qO "${BIN_HADOLINT}" \
-  "https://github.com/hadolint/hadolint/releases/download/v2.12.0/hadolint-Linux-${ARCH/aarch64/arm64/}" \
+  "https://github.com/hadolint/hadolint/releases/download/v2.14.0/hadolint-Linux-${ARCH/aarch64/arm64/}" \
   && chmod +x "${BIN_HADOLINT}"
 
 # Entrypoint

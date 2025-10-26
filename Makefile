@@ -1,30 +1,30 @@
+URL = hmcvlab
+NAME = lint
 TAG = $(shell git tag --sort=committerdate | tail -1)
-URL = gitlab.lrz.de:5005/messtechnik-labor/docker
 
 format:
-	docker run --pull=always --rm -v "${PWD}:/app" -e UID="$(shell id -u)" \
+	docker run --rm -v "${PWD}":/app \
+		-e UID="$(shell id -u)" \
 		${URL}/format:latest
 
 lint:
-	docker run --pull=always --rm -v "${PWD}:/app" \
+	docker run --rm -v "${PWD}":/app \
 		${URL}/lint:latest
 
-create-builder:
-	docker buildx rm tmp-builder
-	docker buildx create --use --name=tmp-builder --platform linux/arm64,linux/amd64
+build:
+	docker buildx create --use && \
+	docker buildx build \
+		-t ${URL}/${NAME}:${TAG} \
+		--push \
+		--platform linux/amd64,linux/arm64 \
+		--file Dockerfile .
 
-build-dockerhub: create-builder
-	docker buildx build --push --platform linux/arm64,linux/amd64 \
-		--tag behretv/lint:latest \
-		--tag behretv/lint:${TAG} \
-		.
-	docker buildx rm tmp-builder
+test:
+	docker run --rm  \
+		-v ${PWD}:/app \
+		${URL}/${NAME}:${TAG} \
+		sh -c "pytest"
 
-build-gitlab: create-builder
-	docker buildx build --push --platform linux/arm64,linux/amd64 \
-		--provenance=false \
-		--tag ${URL}/lint:latest \
-		--tag ${URL}/lint:${TAG} \
-		.
-	docker buildx rm tmp-builder
-
+install_hooks:
+	@echo "make format && make lint" > .git/hooks/pre-commit
+	@echo "make test" > .git/hooks/pre-push

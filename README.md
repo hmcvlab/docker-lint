@@ -6,10 +6,10 @@ Build locally:
 make build
 ```
 
-Run locally:
+Lint code locally:
 
 ```bash
 docker run \
-  --volume "$(pwd):/app" \
-  gitlab.lrz.de:5005/messtechnik-labor/docker/lint
+  --volume "$(pwd)":/app \
+  hmcvlab/lint
 ```
