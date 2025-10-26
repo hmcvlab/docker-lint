@@ -28,3 +28,4 @@ test:
 install_hooks:
 	@echo "make format && make lint" > .git/hooks/pre-commit
 	@echo "make test" > .git/hooks/pre-push
+	chmod +x .git/hooks/pre-*
