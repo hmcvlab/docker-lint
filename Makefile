@@ -1,3 +1,5 @@
+.PHONY: format lint build test deploy install_hooks
+
 URL = hmcvlab
 NAME = lint
 TAG = $(shell git tag --sort=committerdate | tail -1)
@@ -11,6 +13,16 @@ lint:
 		${URL}/lint:latest
 
 build:
+	docker build -t ${URL}/${NAME}:${TAG} --file Dockerfile .
+
+test:
+	docker run --rm --tty \
+		--entrypoint "" \
+		-v .:/app \
+		${URL}/${NAME}:${TAG} \
+		pytest
+
+deploy:
 	docker buildx create --use --name tmp-builder && \
 	docker buildx build \
 		-t ${URL}/${NAME}:${TAG} \
@@ -19,12 +31,6 @@ build:
 		--platform linux/amd64,linux/arm64 \
 		--file Dockerfile . && \
 	docker buildx rm tmp-builder
-
-test:
-	docker run --rm  \
-		-v .:/app \
-		${URL}/${NAME}:${TAG} \
-		sh -c "pytest"
 
 install_hooks:
 	@echo "make format && make lint" > .git/hooks/pre-commit

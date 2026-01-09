@@ -12,14 +12,15 @@ RUN apt-get update -y && \
   chktex \
   cppcheck \
   cpplint \
+  flake8 \
   lacheck \
   pylint \
   python3-docformatter \
-  python3-pip \
-  python3-pytest \
   python3-flake8 \
   python3-flake8-black \
   python3-flake8-pytest \
+  python3-pip \
+  python3-pytest \
   python3-toml \
   shellcheck \
   wget \
