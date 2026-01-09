@@ -11,13 +11,14 @@ lint:
 		${URL}/lint:latest
 
 build:
-	docker buildx create --use && \
+	docker buildx create --use --name tmp-builder && \
 	docker buildx build \
 		-t ${URL}/${NAME}:${TAG} \
 		-t ${URL}/${NAME}:latest \
 		--push \
 		--platform linux/amd64,linux/arm64 \
-		--file Dockerfile .
+		--file Dockerfile . && \
+	docker buildx rm tmp-builder
 
 test:
 	docker run --rm  \
