@@ -80,8 +80,9 @@ line
 n_shell="$(find "$shell_root" -name "*.sh" | wc -l)"
 n_cpp="$(find "$cpp_root" -name "*.cpp" -o -name "*.h" | wc -l)"
 n_python="$(find "$python_root" -name "*.py" | wc -l)"
-n_yaml="$(find "$python_root" -name "*.yml" -o -name "*.yaml" | wc -l)"
-n_docker="$(find "$python_root" -name "*Dockerfile*" | wc -l)"
+n_yaml="$(find "$project_root" -name "*.yml" -o -name "*.yaml" | wc -l)"
+n_docker="$(find "$project_root" -name "*Dockerfile*" | wc -l)"
+n_tex="$(find "$project_root" -name "*.tex" | wc -l)"
 
 # Linter: shellcheck
 header "$n_shell" "shellcheck"
@@ -126,6 +127,15 @@ fi
 header "$n_yaml" "yamllint"
 if [[ $n_yaml -gt 0 ]]; then
   yamllint -c /etc/yamllint "$project_root"
+  ok
+else
+  skip
+fi
+
+# Linter: latex
+header "$n_tex" "latex"
+if [[ $n_tex -gt 0 ]]; then
+  find "$project_root" -name "*.tex" -print0 | xargs -0 chktex -q
   ok
 else
   skip

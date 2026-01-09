@@ -3,25 +3,25 @@ NAME = lint
 TAG = $(shell git tag --sort=committerdate | tail -1)
 
 format:
-	docker run --rm -v "${PWD}":/app \
-		-e UID="$(shell id -u)" \
+	docker run --rm -v .:/app \
 		${URL}/format:latest
 
 lint:
-	docker run --rm -v "${PWD}":/app \
+	docker run --rm -v .:/app \
 		${URL}/lint:latest
 
 build:
 	docker buildx create --use && \
 	docker buildx build \
 		-t ${URL}/${NAME}:${TAG} \
+		-t ${URL}/${NAME}:latest \
 		--push \
 		--platform linux/amd64,linux/arm64 \
 		--file Dockerfile .
 
 test:
 	docker run --rm  \
-		-v ${PWD}:/app \
+		-v .:/app \
 		${URL}/${NAME}:${TAG} \
 		sh -c "pytest"
 
