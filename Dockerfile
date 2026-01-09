@@ -14,7 +14,13 @@ RUN apt-get update -y && \
   cpplint \
   lacheck \
   pylint \
+  python3-docformatter \
   python3-pip \
+  python3-pytest \
+  python3-flake8 \
+  python3-flake8-black \
+  python3-flake8-pytest \
+  python3-toml \
   shellcheck \
   wget \
   yamllint \
@@ -34,11 +40,5 @@ RUN chmod +x ${BIN_LINT}
 
 # Install packages that are only for pip
 USER ubuntu
-RUN python3 -m pip install --no-cache-dir --break-system-packages \
-  toml~=0.10 \
-  flake8~=7.1 \
-  flake8-pytest-style~=2.0 \
-  pytest~=8.3
-
 WORKDIR /app
 ENTRYPOINT ["bash", "-c", "${BIN_LINT}"]
